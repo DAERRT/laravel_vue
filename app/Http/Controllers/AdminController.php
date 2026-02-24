@@ -103,6 +103,13 @@ class AdminController extends Controller
             ->with('success', 'Roles updated');
     }
 
+    public function showRoles()
+    {
+        $roles = Role::all();
+
+        return Inertia::render('Admin/Roles', ['roles' => $roles]);
+    }
+
     //    public function createRole()
     //    {
     //        $role = new Role;

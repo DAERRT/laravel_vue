@@ -25,6 +25,9 @@ const currentUser = computed(() => page.props.auth.user);
             <Link href="/admin" v-if="currentUser && currentUser.roles.some((role) => role.name === 'Admin')">
                 <button v-if="currentUser && currentUser.roles.some((role) => role.name === 'Admin')">Панель администратора</button>
             </Link>
+            <Link href="/logout">
+                <button style="background: red">Выйти</button>
+            </Link>
         </div>
     </div>
 </template>
@@ -58,7 +61,7 @@ button {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
+    margin:10px;
 }
 button:hover {
     transition: background-color 0.3s ease;

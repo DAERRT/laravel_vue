@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import type { User } from '@/types';
 
 interface Role {
@@ -46,7 +46,7 @@ const deleteUser = (id: number) => {
     if (confirm('Вы уверены, что хотите удалить пользователя?')) {
         formDropPass.post(`/delete/${id}`);
     }
-}
+};
 </script>
 
 <template>
@@ -82,19 +82,20 @@ const deleteUser = (id: number) => {
                         <span>{{ role.name }}</span>
                     </label>
                 </div>
-
                 <button type="submit" :disabled="rolesForm.processing">Сохранить роли</button>
-
                 <div v-if="rolesForm.errors.roles" class="error">
                     {{ rolesForm.errors.roles }}
                 </div>
             </form>
+            <Link href="/admin">
+                <button type="button">&lt;- Назад</button>
+            </Link>
         </div>
     </div>
 </template>
 
 <style scoped>
-.roles{
+.roles {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -104,7 +105,6 @@ const deleteUser = (id: number) => {
     padding: 20px;
     border-radius: 5px;
     background-color: #c1bfbf;
-
 }
 .roles-list {
     display: flex;

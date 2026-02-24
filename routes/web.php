@@ -5,7 +5,9 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-
+Route::get('/', function (){
+    return redirect()->route('home');
+});
 Route::get('/login', [LoginController::class, 'index'])->name('login.show');
 Route::post('/login', [LoginController::class, 'login'])->name('login.login');
 
@@ -31,3 +33,5 @@ Route::post('/edit/save', [AdminController::class, 'save'])->name('admin.save');
 Route::post('/edit/{id}/roles', [AdminController::class, 'updateRoles'])->name('admin.roles.update');
 
 Route::get('/drop/{id}', [AdminController::class, 'dropPass'])->name('admin.drop');
+
+Route::get('/roles', [AdminController::class, 'showRoles'])->name('admin.roles');
