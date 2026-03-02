@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use App\Models\Role;
 
 class RegisterController extends Controller
 {
@@ -35,7 +36,15 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->roles()->attach(2);
+        
+        try {
+            $userRole = Role::where('name', 'user')->first();
+            if ($userRole) {
+                $user->roles()->attach($userRole->id);
+            }
+        } catch (\Exception $e) {
+            log('Error assigning role to user: ' . $e->getMessage());
+        }
 
         event(new Registered($user));
 

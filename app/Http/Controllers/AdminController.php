@@ -110,18 +110,8 @@ class AdminController extends Controller
         return Inertia::render('Admin/Roles', ['roles' => $roles]);
     }
 
-    //    public function createRole()
-    //    {
-    //        $role = new Role;
-    //        $role->name = 'Admin';
-    //        $role->slug = 'admin';
-    //        $role->save();
-    //
-    //        $role1 = new Role;
-    //        $role1->name = 'User';
-    //        $role1->slug = 'usr';
-    //        $role1->save();
-    //
-    //        return 'created';
-    //    }
+    // public function createRoles(){
+    //     $adminRole = Role::firstOrCreate(['name' => 'admin','slug' => 'admin']);
+    //     $userRole = Role::firstOrCreate(['name' => 'user','slug' => 'user']);
+    // }
 }

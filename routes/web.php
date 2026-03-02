@@ -35,3 +35,5 @@ Route::post('/edit/{id}/roles', [AdminController::class, 'updateRoles'])->name('
 Route::get('/drop/{id}', [AdminController::class, 'dropPass'])->name('admin.drop');
 
 Route::get('/roles', [AdminController::class, 'showRoles'])->name('admin.roles');
+
+// Route::get('/createRoles', [AdminController::class,'createRoles'])->name('admin.roles.create');  
