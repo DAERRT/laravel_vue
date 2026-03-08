@@ -13,7 +13,7 @@ class AdminController extends Controller
 {
     public function show()
     {
-        if (! auth()->user() || ! auth()->user()->roles->some(fn ($role) => $role->name === 'Admin')) {
+        if (! auth()->user() || ! auth()->user()->roles->some(fn ($role) => $role->name === 'admin')) {
             abort(403, 'Unauthorized');
         }
         $users = User::all();
@@ -79,7 +79,7 @@ class AdminController extends Controller
     {
         $currentUser = Auth::user();
 
-        if (! $currentUser || ! $currentUser->roles->some(fn ($role) => $role->name === 'Admin')) {
+        if (! $currentUser || ! $currentUser->roles->some(fn ($role) => $role->name === 'admin')) {
             abort(403, 'Unauthorized');
         }
 

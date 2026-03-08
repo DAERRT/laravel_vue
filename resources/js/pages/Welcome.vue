@@ -22,11 +22,14 @@ const currentUser = computed(() => page.props.auth.user);
                 </div>
             </div>
             <p v-else>Welcome to the home page!</p>
-            <Link href="/admin" v-if="currentUser && currentUser.roles.some((role) => role.name === 'Admin')">
-                <button v-if="currentUser && currentUser.roles.some((role) => role.name === 'Admin')">Панель администратора</button>
+            <Link href="/admin" v-if="currentUser && currentUser.roles.some((role) => role.name === 'admin')">
+                <button v-if="currentUser && currentUser.roles.some((role) => role.name === 'admin')">Панель администратора</button>
             </Link>
             <Link href="/logout">
                 <button style="background: red">Выйти</button>
+            </Link>
+            <Link href="/profile">
+                <button style="background: greenyellow">Профиль</button>
             </Link>
         </div>
     </div>
@@ -61,7 +64,7 @@ button {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    margin:10px;
+    margin: 10px;
 }
 button:hover {
     transition: background-color 0.3s ease;

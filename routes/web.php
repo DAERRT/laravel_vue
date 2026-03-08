@@ -5,6 +5,9 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
+
 Route::get('/', function (){
     return redirect()->route('home');
 });
@@ -35,5 +38,16 @@ Route::post('/edit/{id}/roles', [AdminController::class, 'updateRoles'])->name('
 Route::get('/drop/{id}', [AdminController::class, 'dropPass'])->name('admin.drop');
 
 Route::get('/roles', [AdminController::class, 'showRoles'])->name('admin.roles');
+
+
+Route::get('/profile',[ProfileController::class, 'showProfile'])->name('profile.show');
+
+Route::post('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete');
+
+Route::get('/profile/edit',[ProfileController::class, 'showEditProfile'])->name('profile.edit.show');
+Route::post('/profile/edit',[ProfileController::class, 'storeEditProfile'])->name('profile.edit.store');
+
+Route::get('/profile/change-password',[ProfileController::class, 'showChangePass'])->name('profile.edit.show');
+Route::get('/profile/change-password',[ProfileController::class, 'showChangePass'])->name('profile.edit.store');
 
 // Route::get('/createRoles', [AdminController::class,'createRoles'])->name('admin.roles.create');  

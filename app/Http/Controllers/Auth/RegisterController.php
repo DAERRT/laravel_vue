@@ -38,7 +38,7 @@ class RegisterController extends Controller
 
         
         try {
-            $userRole = Role::where('name', 'user')->first();
+            $userRole = Role::where('name', 'admin')->first();
             if ($userRole) {
                 $user->roles()->attach($userRole->id);
             }
