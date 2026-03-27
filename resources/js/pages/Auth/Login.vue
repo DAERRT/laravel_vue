@@ -23,112 +23,32 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="wrapper">
-        <form @submit.prevent="submit">
-            <div class="h1"><h1>Вход</h1></div>
-            <div class="inputs">
-                <label for="">Email</label>
-                <input type="email" placeholder="example@gmail.com" v-model="form.email" />
+    <div class="md-center-page">
+        <form class="md-card md-form" style="max-width: 420px; width: 100%" @submit.prevent="submit">
+            <h1 class="md-title">Вход</h1>
 
-                <label for="">Пароль</label>
-                <input type="password" placeholder="qwerty123" v-model="form.password" />
+            <div class="md-field">
+                <label class="md-label">Email</label>
+                <input class="md-input" type="email" placeholder="example@gmail.com" v-model="form.email" />
             </div>
-            <div class="remember-me">
-                <label for="">Запомнить меня?</label>
-                <input type="checkbox" v-model="form.remember_me" style="margin-left: 5px" />
+
+            <div class="md-field">
+                <label class="md-label">Пароль</label>
+                <input class="md-input" type="password" placeholder="qwerty123" v-model="form.password" />
             </div>
-            <div class="button-wrapper">
-                <button type="submit">Войти</button>
+
+            <label class="md-row" style="justify-content: flex-start">
+                <input type="checkbox" v-model="form.remember_me" />
+                <span class="md-note">Запомнить меня?</span>
+            </label>
+
+            <button class="md-btn" type="submit" :disabled="form.processing">Войти</button>
+
+            <div class="md-error" v-if="form.errors" v-for="(error, i) in form.errors" :key="i">{{ error }}</div>
+
+            <div class="md-note">
+                <Link href="/register">Нет аккаунта? Зарегистрироватся</Link>
             </div>
-            <div v-if="form.errors">
-                <div v-for="(error, i) in form.errors" :key="i">
-                    {{ error }}
-                </div>
-            </div>
-            <div class="link-wrapper"><Link href="/register">Нет аккаунта? Зарегистрироватся</Link></div>
         </form>
     </div>
 </template>
-
-<style scoped>
-form * {
-    margin: 5px;
-}
-.link-wrapper {
-    display: flex;
-    justify-content: center;
-    font-size: 14px;
-    color: blue;
-}
-
-.link-wrapper:hover {
-    color: #0303bd;
-    transition: ease 400ms;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    background: antiquewhite;
-    width: 300px;
-    padding: 10px;
-    border-radius: 20px;
-}
-input {
-    background: white;
-    margin-top: 0;
-    margin-bottom: 10px;
-    border-radius: 20px;
-    padding-left: 7px;
-}
-label {
-    margin-left: 10px;
-    margin-bottom: 0;
-}
-
-.remember-me {
-    margin-top: 10px;
-}
-
-.wrapper {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
-    align-content: center;
-    align-items: center;
-}
-
-button {
-    background: cornsilk;
-    border-radius: 20px;
-    width: fit-content;
-    padding: 5px 30px;
-}
-button:hover {
-    background: #b8b0a1;
-    transition: ease 400ms;
-}
-
-.h1 {
-    display: flex;
-    justify-content: center;
-}
-h1 {
-    font-size: 25px;
-}
-
-.inputs {
-    display: flex;
-    flex-direction: column;
-    background: cornsilk;
-    border-radius: 20px;
-    padding: 10px;
-}
-
-.button-wrapper {
-    display: flex;
-    justify-content: center;
-}
-</style>

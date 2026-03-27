@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use App\Models\Role;
 
+use function Laravel\Prompts\error;
+
 class RegisterController extends Controller
 {
     public function index()
@@ -29,16 +31,22 @@ class RegisterController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:8',
         ]);
+        $userRole = Role::where('name', 'admin')->first();
+
+        if(!$userRole){
+            error('no role');
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            // 'description' => $request->description,
         ]);
 
         
         try {
-            $userRole = Role::where('name', 'admin')->first();
+            $userRole = Role::where('name', 'user')->first();
             if ($userRole) {
                 $user->roles()->attach($userRole->id);
             }

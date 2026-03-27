@@ -50,223 +50,48 @@ const deleteUser = (id: number) => {
 </script>
 
 <template>
-    <div class="wrapper">
-        <div class="sub-wrapper">
-            <h1>Изменение пользователя</h1>
-            <form @submit.prevent="editUser" class="edit-user">
-                <div class="inputs">
+    <div class="md-page">
+        <div class="md-container md-stack" style="max-width: 760px">
+            <div class="md-card md-stack">
+                <h1 class="md-title">Изменение пользователя</h1>
+
+                <form @submit.prevent="editUser" class="md-form">
                     <input type="hidden" v-model="editUserForm.id" />
-                    <label for="">Имя</label>
-                    <input type="text" placeholder="Vasia" v-model="editUserForm.name" />
 
-                    <label for="">Email</label>
-                    <input type="email" placeholder="example@gmail.com" v-model="editUserForm.email" />
+                    <div class="md-field">
+                        <label class="md-label">Имя</label>
+                        <input class="md-input" type="text" placeholder="Vasia" v-model="editUserForm.name" />
+                    </div>
+
+                    <div class="md-field">
+                        <label class="md-label">Email</label>
+                        <input class="md-input" type="email" placeholder="example@gmail.com" v-model="editUserForm.email" />
+                    </div>
+
+                    <button class="md-btn" type="submit" :disabled="editUserForm.processing">Сохранить</button>
+                </form>
+
+                <div class="md-row">
+                    <form @submit.prevent="dropPass(user.id)"><button class="md-btn md-btn-warning" type="submit">Сбросить пароль</button></form>
+                    <form @submit.prevent="deleteUser(user.id)"><button class="md-btn md-btn-danger" type="submit">Удалить пользователя</button></form>
                 </div>
-                <button type="submit" :disabled="editUserForm.processing">Сохранить</button>
-            </form>
-            <div class="buttons">
-                <form @submit.prevent="dropPass(user.id)" class="drop-pass">
-                    <button type="submit">Сбросить пароль</button>
-                </form>
-                <form @submit.prevent="deleteUser(user.id)" class="delete-user">
-                    <button type="submit">Удалить пользователя</button>
-                </form>
-            </div>
 
-            <form class="roles" @submit.prevent="saveRoles">
-                <h3>Роли</h3>
+                <form class="md-form" @submit.prevent="saveRoles">
+                    <h3 class="md-title" style="font-size: 20px">Роли</h3>
 
-                <div class="roles-list">
-                    <label v-for="role in roles" :key="role.id" class="role-item">
+                    <label v-for="role in roles" :key="role.id" class="md-row" style="justify-content: flex-start">
                         <input type="checkbox" :value="role.id" v-model="rolesForm.roles" />
                         <span>{{ role.name }}</span>
                     </label>
+
+                    <button class="md-btn md-btn-success" type="submit" :disabled="rolesForm.processing">Сохранить роли</button>
+                    <div v-if="rolesForm.errors.roles" class="md-error">{{ rolesForm.errors.roles }}</div>
+                </form>
+
+                <div>
+                    <Link href="/admin"><button class="md-btn md-btn-tonal" type="button">&lt;- Назад</button></Link>
                 </div>
-                <button type="submit" :disabled="rolesForm.processing">Сохранить роли</button>
-                <div v-if="rolesForm.errors.roles" class="error">
-                    {{ rolesForm.errors.roles }}
-                </div>
-            </form>
-            <Link href="/admin">
-                <button type="button">&lt;- Назад</button>
-            </Link>
+            </div>
         </div>
     </div>
 </template>
-
-<style scoped>
-.roles {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 330px;
-    width: 100%;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #c1bfbf;
-}
-.roles-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    max-width: 330px;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #f5f5f5;
-}
-.role-item {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    max-width: 330px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #fff;
-}
-.roles button {
-    padding: 10px 20px;
-    background-color: #93df7d;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.roles button:hover {
-    background-color: #78ba62;
-    transition: all 0.4s ease-in-out;
-}
-
-.buttons {
-    display: flex;
-    gap: 10px;
-}
-.delete-user button {
-    background-color: #ff5757;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.delete-user button:hover {
-    background-color: #c13e3e;
-    transition: all 0.4s ease-in-out;
-}
-
-.sub-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #f5f5f5;
-    padding: 20px;
-    border-radius: 5px;
-    max-width: 330px;
-}
-.edit-user {
-    align-items: center;
-    justify-content: center;
-    background-color: #f5f5f5;
-    padding: 20px;
-    border-radius: 5px;
-    max-width: 330px;
-}
-.edit-user {
-    display: flex;
-    flex-direction: column;
-    background-color: #c1bfbf;
-    padding: 20px;
-    border-radius: 5px;
-    max-width: 330px;
-}
-.edit-user button {
-    background-color: #93df7d;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-.edit-user button:hover {
-    background-color: #78ba62;
-    transition: all 0.4s ease-in-out;
-}
-.edit-user input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-.edit-user input:focus {
-    outline: none;
-    border-color: #78ba62;
-    background-color: #e6ffed;
-    transition: all 0.4s ease-in-out;
-}
-
-.drop-pass button {
-    padding: 5px 10px;
-    background-color: #93df7d;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.drop-pass button:hover {
-    background-color: #78ba62;
-    transition: all 0.4s ease-in-out;
-}
-
-.buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-    height: 100vh;
-    margin: 0 auto;
-}
-.sub-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-}
-.h1 {
-    text-align: center;
-}
-.inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.roles {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.roles-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-.role-item {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-.error {
-    color: red;
-}
-</style>

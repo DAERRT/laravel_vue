@@ -5,93 +5,47 @@ import { Link } from '@inertiajs/vue3';
 const form = useForm<{
     password: string;
     newPassword: string;
-    confirm_newPassword: string;
-}>();
+    newPassword_confirmation: string;
+}>({
+    password: '',
+    newPassword: '',
+    newPassword_confirmation: '',
+});
 
-const submit = () => {};
+const submit = () => {
+    form.post('/profile/change-password');
+};
 </script>
 
 <template>
-    <div class="button-wrapper">
-        <Link href="/profile">
-            <button><- Назад</button>
-        </Link>
-    </div>
-    <div class="wrapper">
-        <form @submit.prevent="submit">
-            <label for="">Старый пароль</label>
-            <input type="password" v-model="form.password" />
-            <label for="">Новый пароль</label>
-            <input type="password" v-model="form.newPassword" />
-            <label for="">Подтверлите новый пароль</label>
-            <input type="password" v-model="form.confirm_newPassword" />
-            <button class="save">Сохранить</button>
-        </form>
+    <div class="md-page">
+        <div class="md-container md-stack" style="max-width: 760px">
+            <div>
+                <Link href="/profile"><button class="md-btn md-btn-tonal"><- Назад</button></Link>
+            </div>
+
+            <form class="md-card md-form" @submit.prevent="submit">
+                <h1 class="md-title">Смена пароля</h1>
+
+                <div class="md-field">
+                    <label class="md-label">Старый пароль</label>
+                    <input class="md-input" type="password" v-model="form.password" />
+                </div>
+
+                <div class="md-field">
+                    <label class="md-label">Новый пароль</label>
+                    <input class="md-input" type="password" v-model="form.newPassword" />
+                </div>
+
+                <div class="md-field">
+                    <label class="md-label">Подтверлите новый пароль</label>
+                    <input class="md-input" type="password" v-model="form.newPassword_confirmation" />
+                </div>
+
+                <button class="md-btn md-btn-success" :disabled="form.processing">Сохранить</button>
+
+                <div class="md-error" v-if="form.errors" v-for="(error, i) in form.errors" :key="i">{{ error }}</div>
+            </form>
+        </div>
     </div>
 </template>
-
-<style scoped>
-.wrapper {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: aliceblue;
-}
-form {
-    display: flex;
-    flex-direction: column;
-    background: rgb(143, 232, 248);
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
-}
-.button-wrapper {
-    padding-left: 20px;
-    padding-top: 20px;
-    position: fixed;
-}
-.button-wrapper button {
-    background-color: rgb(143, 232, 248);
-    padding: 10px;
-    border-radius: 20px;
-    transition: ease 0.2s;
-}
-.button-wrapper button:hover {
-    background-color: rgb(128, 207, 221);
-    padding: 15px;
-    font-size: large;
-    font-weight: bold;
-}
-form input {
-    background-color: aliceblue;
-    border-radius: 20px;
-    padding-left: 10px;
-    margin-bottom: 5px;
-    min-width: 500px;
-}
-form label {
-    padding-left: 10px;
-}
-textarea {
-    min-height: 100px;
-    background: aliceblue;
-    padding: 5px;
-    border-radius: 10px;
-    margin-bottom: 5px;
-}
-.save {
-    background: darkseagreen;
-    transition: ease 0.2s;
-    padding: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    width: 100%;
-}
-.save:hover {
-    background: rgb(115, 150, 115);
-}
-</style>

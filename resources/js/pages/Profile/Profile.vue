@@ -2,8 +2,19 @@
 import { User } from '@/types';
 import { Link, router, useForm } from '@inertiajs/vue3';
 
+interface Article {
+    id: number;
+    title: string;
+    subtitle?: string;
+    body: string;
+    author_id: number;
+    created_at: string;
+    updated_at: string;
+}
+
 const props = defineProps<{
     user: User;
+    articles?: Article[];
 }>();
 
 const formatDate = (dateString: string) => {
@@ -33,136 +44,59 @@ const submitDelete = () => {
 </script>
 
 <template>
-    <div class="button-wrapper">
-        <Link href="/home">
-            <button><- Назад</button>
-        </Link>
-    </div>
-    <div class="mainwrapper">
-        <div class="subwrapper">
-            <label for="email">Имя</label>
-            <input type="text" disabled="true" :value="props.user.name" />
-            <label for="email">Email</label>
-            <input type="text" disabled="true" :value="props.user.email" />
-            <label for="email">Дата создания</label>
-            <input type="text" disabled="true" :value="datetimeCreated" />
-            <div class="datetime" v-if="datetimeCreated !== datetimeUpdated">
-                <label for="email">Updated at</label>
-                <input type="text" disabled="true" :value="datetimeUpdated" />
+    <div class="md-page">
+        <div class="md-container md-stack" style="max-width: 920px">
+            <div>
+                <Link href="/home"><button class="md-btn md-btn-tonal"><- Назад</button></Link>
             </div>
-            <div class="about-wrapper">
-                <label for="">About Me</label>
-                <textarea v-if="props.user.description" disabled="true">{{ props.user.description }}</textarea>
-                <textarea v-else disabled="true" placeholder="Расскажите о себе"></textarea>
+
+            <div class="md-card md-form">
+                <h1 class="md-title">Профиль</h1>
+
+                <div class="md-field">
+                    <label class="md-label">Имя</label>
+                    <input class="md-input" type="text" disabled="true" :value="props.user.name" />
+                </div>
+
+                <div class="md-field">
+                    <label class="md-label">Email</label>
+                    <input class="md-input" type="text" disabled="true" :value="props.user.email" />
+                </div>
+
+                <div class="md-field">
+                    <label class="md-label">Дата создания</label>
+                    <input class="md-input" type="text" disabled="true" :value="datetimeCreated" />
+                </div>
+
+                <div class="md-field" v-if="datetimeCreated !== datetimeUpdated">
+                    <label class="md-label">Updated at</label>
+                    <input class="md-input" type="text" disabled="true" :value="datetimeUpdated" />
+                </div>
+
+                <div class="md-field">
+                    <label class="md-label">About Me</label>
+                    <textarea class="md-textarea" v-if="props.user.description" disabled="true">{{ props.user.description }}</textarea>
+                    <textarea class="md-textarea" v-else disabled="true" placeholder="Расскажите о себе"></textarea>
+                </div>
+
+                <div class="md-field">
+                    <label class="md-label">Статьи</label>
+                    <div class="md-stack" v-if="articles">
+                        <div v-for="article in articles" :key="article.id" class="md-card" style="padding: 10px 12px; border-radius: 10px">
+                            <Link :href="`/articles/${article.id}`">{{ article.title }}</Link>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md-row">
+                    <Link href="/profile/edit"><button class="md-btn md-btn-success">Редактировать</button></Link>
+                    <Link href="/profile/change-password"><button class="md-btn md-btn-warning">Смена пароля</button></Link>
+                    <button class="md-btn md-btn-danger" @click="logout">Выйти</button>
+                    <form @submit.prevent="submitDelete">
+                        <button class="md-btn md-btn-danger">Удалить аккаунт</button>
+                    </form>
+                </div>
             </div>
-            <Link href="/profile/edit">
-                <button class="edit">Редактировать</button>
-            </Link>
-            <Link href="/profile/change-password">
-                <button class="chpass">Смена пароля</button>
-            </Link>
-            <button class="logout" @click="logout">Выйти</button>
-            <form @submit.prevent="submitDelete">
-                <button class="delete">Удалить аккаунт</button>
-            </form>
         </div>
     </div>
 </template>
-
-<style scoped>
-.about-wrapper {
-    display: flex;
-    flex-direction: column;
-}
-.subwrapper button {
-    padding: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    width: 100%;
-}
-.edit {
-    background: darkseagreen;
-    transition: ease 0.2s;
-}
-.chpass {
-    background: rgb(216, 195, 7);
-    transition: ease 0.2s;
-}
-.logout {
-    background: rgb(182, 82, 82);
-    transition: ease 0.2s;
-}
-.delete {
-    background: rgb(182, 82, 82);
-    transition: ease 0.2s;
-}
-.edit:hover {
-    background: rgb(115, 150, 115);
-}
-.chpass:hover {
-    background: rgb(163, 147, 5);
-}
-.logout:hover {
-    background: rgb(146, 66, 66);
-}
-.delete:hover {
-    background: rgb(146, 66, 66);
-}
-
-.button-wrapper {
-    padding-left: 20px;
-    padding-top: 20px;
-    position: fixed;
-}
-.button-wrapper button {
-    background-color: rgb(143, 232, 248);
-    padding: 10px;
-    border-radius: 20px;
-    transition: ease 0.2s;
-}
-.button-wrapper button:hover {
-    background-color: rgb(128, 207, 221);
-    padding: 15px;
-    font-size: large;
-    font-weight: bold;
-}
-.datetime {
-    display: flex;
-    flex-direction: column;
-}
-.mainwrapper {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: aliceblue;
-}
-.subwrapper {
-    display: flex;
-    flex-direction: column;
-    background: rgb(143, 232, 248);
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
-}
-.subwrapper input {
-    background-color: aliceblue;
-    border-radius: 20px;
-    padding-left: 10px;
-    margin-bottom: 5px;
-    min-width: 500px;
-}
-.subwrapper label {
-    padding-left: 10px;
-}
-textarea {
-    min-height: 100px;
-    background: aliceblue;
-    padding: 5px;
-    border-radius: 10px;
-    margin-bottom: 5px;
-}
-</style>

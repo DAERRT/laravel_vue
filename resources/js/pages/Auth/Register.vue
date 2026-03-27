@@ -6,6 +6,7 @@ interface Form {
     email: string;
     password: string;
     password_confirmation: string;
+    description: string;
     remember_me: boolean;
 }
 
@@ -14,6 +15,7 @@ const form = useForm<Form>({
     email: '',
     password: '',
     password_confirmation: '',
+    description: '',
     remember_me: false,
 });
 
@@ -25,113 +27,40 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="wrapper">
-        <form action="" @submit.prevent="submit">
-            <div class="h1"><h1>Регистрация</h1></div>
-            <div class="inputs">
-                <label for="">Имя</label>
-                <input type="text" placeholder="Vasia" v-model="form.name" />
+    <div class="md-center-page">
+        <form class="md-card md-form" style="max-width: 420px; width: 100%" @submit.prevent="submit">
+            <h1 class="md-title">Регистрация</h1>
 
-                <label for="">Email</label>
-                <input type="email" placeholder="example@gmail.com" v-model="form.email" />
-
-                <label for="">Пароль</label>
-                <input type="password" placeholder="qwerty123" v-model="form.password" />
-
-                <label for="">Повторите пароль</label>
-                <input type="password" placeholder="qwerty123" v-model="form.password_confirmation" />
+            <div class="md-field">
+                <label class="md-label">Имя</label>
+                <input class="md-input" type="text" placeholder="Vasia" v-model="form.name" />
             </div>
-            <div class="remember-me">
-                <label for="">Запомнить меня?</label>
+
+            <div class="md-field">
+                <label class="md-label">Email</label>
+                <input class="md-input" type="email" placeholder="example@gmail.com" v-model="form.email" />
+            </div>
+
+            <div class="md-field">
+                <label class="md-label">Пароль</label>
+                <input class="md-input" type="password" placeholder="qwerty123" v-model="form.password" />
+            </div>
+
+            <div class="md-field">
+                <label class="md-label">Повторите пароль</label>
+                <input class="md-input" type="password" placeholder="qwerty123" v-model="form.password_confirmation" />
+            </div>
+
+            <label class="md-row" style="justify-content: flex-start">
                 <input type="checkbox" v-model="form.remember_me" />
-            </div>
-            <div class="button-wrapper">
-                <button type="submit">Войти</button>
-            </div>
-            <div v-if="form.errors">
-                <div v-for="(error, i) in form.errors" :key="i">
-                    {{ error }}
-                </div>
-            </div>
-            <div class="link-wrapper"><Link href="/login"> Есть аккаунт? Войти </Link></div>
+                <span class="md-note">Запомнить меня?</span>
+            </label>
+
+            <button class="md-btn" type="submit" :disabled="form.processing">Войти</button>
+
+            <div class="md-error" v-if="form.errors" v-for="(error, i) in form.errors" :key="i">{{ error }}</div>
+
+            <div class="md-note"><Link href="/login"> Есть аккаунт? Войти </Link></div>
         </form>
     </div>
 </template>
-
-<style scoped>
-form * {
-    margin: 5px;
-}
-.link-wrapper {
-    display: flex;
-    justify-content: center;
-    font-size: 14px;
-    color: blue;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    background: antiquewhite;
-    width: 300px;
-    padding: 10px;
-    border-radius: 20px;
-}
-input {
-    background: white;
-    margin-top: 0;
-    margin-bottom: 10px;
-    border-radius: 20px;
-    padding-left: 7px;
-}
-label {
-    margin-left: 10px;
-    margin-bottom: 0;
-}
-
-.remember-me {
-    margin-top: 10px;
-}
-
-.wrapper {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
-    align-content: center;
-    align-items: center;
-}
-
-button {
-    background: cornsilk;
-    border-radius: 20px;
-    width: fit-content;
-    padding: 5px 30px;
-}
-button:hover {
-    background: #b8b0a1;
-    transition: ease 400ms;
-}
-
-.h1 {
-    display: flex;
-    justify-content: center;
-}
-h1 {
-    font-size: 25px;
-}
-
-.inputs {
-    display: flex;
-    flex-direction: column;
-    background: cornsilk;
-    border-radius: 20px;
-    padding: 10px;
-}
-
-.button-wrapper {
-    display: flex;
-    justify-content: center;
-}
-</style>

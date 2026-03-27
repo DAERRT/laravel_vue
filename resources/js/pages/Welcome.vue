@@ -3,74 +3,39 @@ import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
 const page = usePage();
-
 const currentUser = computed(() => page.props.auth.user);
 </script>
 
 <template>
-    <div class="wrapper">
-        <div class="card">
-            <h1>Home page</h1>
-            <div v-if="currentUser">
+    <div class="md-center-page">
+        <div class="md-card md-stack" style="max-width: 680px; width: 100%">
+            <h1 class="md-title">Home page</h1>
+            <div class="md-stack" v-if="currentUser">
                 <div>Hello, {{ currentUser.name }}, welcome to the home page!</div>
-                <div v-if="currentUser.roles.length == 1">
-                    Your role is
-                    <label class="role">{{ currentUser.roles[0].name }}</label>
+                <div v-if="currentUser.roles.length == 1" class="md-row">
+                    <span>Your role is</span>
+                    <label class="md-chip">{{ currentUser.roles[0].name }}</label>
                 </div>
-                <div v-else>
-                    Your roles are <label v-for="role in currentUser.roles" class="role" :key="role.id">{{ role.name }}</label>
+                <div v-else class="md-row">
+                    <span>Your roles are</span>
+                    <label v-for="role in currentUser.roles" class="md-chip" :key="role.id">{{ role.name }}</label>
                 </div>
             </div>
-            <p v-else>Welcome to the home page!</p>
-            <Link href="/admin" v-if="currentUser && currentUser.roles.some((role) => role.name === 'admin')">
-                <button v-if="currentUser && currentUser.roles.some((role) => role.name === 'admin')">Панель администратора</button>
-            </Link>
-            <Link href="/logout">
-                <button style="background: red">Выйти</button>
-            </Link>
-            <Link href="/profile">
-                <button style="background: greenyellow">Профиль</button>
-            </Link>
+            <p v-else class="md-note">Welcome to the home page!</p>
+            <div class="md-row">
+                <Link href="/admin" v-if="currentUser && currentUser.roles.some((role) => role.name === 'admin')">
+                    <button class="md-btn md-btn-tonal">Панель администратора</button>
+                </Link>
+                <Link href="/profile">
+                    <button class="md-btn md-btn-success">Профиль</button>
+                </Link>
+                <Link href="/articles">
+                    <button class="md-btn">Статьи</button>
+                </Link>
+                <Link href="/logout">
+                    <button class="md-btn md-btn-danger">Выйти</button>
+                </Link>
+            </div>
         </div>
     </div>
 </template>
-
-<style scoped>
-.wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
-    margin: 0 auto;
-}
-.card {
-    text-align: center;
-    background-color: darkgray;
-    padding: 20px;
-    border-radius: 10px;
-}
-.role {
-    background-color: lightgray;
-    padding: 3px;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px;
-}
-button:hover {
-    transition: background-color 0.3s ease;
-    background-color: #0069d9;
-}
-button:active {
-    background-color: #0056b3;
-}
-</style>

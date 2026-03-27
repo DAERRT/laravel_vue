@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->text('description')->nullable();
+        Schema::create('rates', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users','id');
+            $table->foreignId('article_id')->constrained('articles','id');
+            $table->boolean('rate');
+
+            $table->unique(['user_id','article_id']);
         });
     }
 
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('rates');
     }
 };

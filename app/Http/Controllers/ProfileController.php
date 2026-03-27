@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 
 class ProfileController extends Controller
@@ -17,7 +19,8 @@ class ProfileController extends Controller
         if(!$user){
             return redirect()->route('login.show');
         }
-        return Inertia::render('Profile/Profile', ['user'=>$user]);
+        $articles = Article::where('author_id','=',$user->id)->get();
+        return Inertia::render('Profile/Profile', ['user'=>$user,'articles'=>$articles]);
     }
 
     public function showEditProfile(){
@@ -44,6 +47,18 @@ class ProfileController extends Controller
 
     public function showChangePass(){
         return Inertia::render('Profile/ChangePassword');
+    }
+
+    public function storeChangePass(Request $request){
+        $request -> validate([
+            'password' => 'required|current_password',
+            'newPassword' => 'required|confirmed|min:8|string',
+        ]);
+        $user = Auth::user();
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+        Auth::logoutOtherDevices($request->newPassword);
+        return redirect()->route('profile.show');
     }
 
     public function delete(){
